@@ -46,7 +46,7 @@ class DaysChallengeStorage {
         // Configure its main properties:
         challenge.id = UUID().uuidString
         challenge.createdAt = Date()
-        challenge.fromDate = daysDates.sorted().first!
+        challenge.fromDate = Date().getBeginningOfDay()
         challenge.toDate = daysDates.sorted().last!
 
         // Associate its habit entity.

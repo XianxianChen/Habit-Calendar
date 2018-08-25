@@ -56,15 +56,9 @@ extension ColorsPickerView {
                     assertionFailure("ColorOptionCell couldn't be dequeued.")
                     return UICollectionViewCell()
             }
-            let color = colors[indexPath.item]
 
             // Configure the cell's color option.
-            cell.optionColor = color
-
-            // If the color is selected, change its style.
-            if selectedColor == color {
-                cell.animateSelection()
-            }
+            cell.optionColor = colors[indexPath.item]
 
             return cell
         }

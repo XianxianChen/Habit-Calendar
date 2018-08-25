@@ -12,6 +12,10 @@ import UIKit
 /// habit being created/edited.
 class FireTimesSelectionViewController: UIViewController {
 
+    // MARK: Types
+
+    typealias FireTime = DateComponents
+
     // MARK: Properties
 
     /// The fire date cell's reusable identifier.
@@ -32,7 +36,7 @@ class FireTimesSelectionViewController: UIViewController {
     @IBOutlet weak var fireTimesAmountLabel: UILabel?
 
     /// The fire dates selected by the user.
-    var selectedFireTimes = Set<FireTimesDisplayable.FireTime>() {
+    var selectedFireTimes = Set<FireTime>() {
         didSet {
             guard doneButton != nil, fireTimesAmountLabel != nil else { return }
             updateUI()
@@ -186,8 +190,8 @@ extension FireTimesSelectionViewController: UITableViewDataSource, UITableViewDe
     /// - Parameter minutesInterval: The minutes used to create the
     ///                              progression of dates.
     /// - Returns: An array of successive fire times within a day.
-    private func makeFireTimesProgression(minutesInterval: Int) -> [FireTimesDisplayable.FireTime] {
-        var fireTimes = [FireTimesDisplayable.FireTime]()
+    func makeFireTimesProgression(minutesInterval: Int) -> [FireTime] {
+        var fireTimes = [FireTime]()
 
         let minutesInDay = 24 * 60
         let beginningDate = Date().getBeginningOfDay()
@@ -204,14 +208,7 @@ extension FireTimesSelectionViewController: UITableViewDataSource, UITableViewDe
                 return []
             }
 
-            fireTimes.append(
-                DateComponents(
-                    calendar: Calendar.current,
-                    timeZone: TimeZone.current,
-                    hour: nextDate.components.hour,
-                    minute: nextDate.components.minute
-                )
-            )
+            fireTimes.append(nextDate.components)
         }
 
         return fireTimes
@@ -282,6 +279,6 @@ protocol FireTimesSelectionViewControllerDelegate: class {
 
     /// Called when the habit days are done being selected by the user.
     func didSelectFireTimes(
-        _ fireTimes: [FireTimesDisplayable.FireTime]
+        _ fireTimes: [FireTimesSelectionViewController.FireTime]
     )
 }
